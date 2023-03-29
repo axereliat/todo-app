@@ -24,7 +24,7 @@ public class Todo {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private TodoStatus status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }

@@ -6,6 +6,8 @@ import com.todo.domain.models.binding.UserBindingModel;
 import com.todo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -29,5 +31,24 @@ public class UserService {
 
     public User findByUsername(String username) {
         return this.userRepository.findByUsername(username);
+    }
+
+    public void updateInfo(Integer id, String username) {
+        User user = this.userRepository.findById(id).orElse(null);
+
+        user.setUsername(username);
+        this.userRepository.save(user);
+    }
+
+    public void deleteUser(Integer id) {
+        this.userRepository.deleteById(id);
+    }
+
+    public User getById(Integer id) {
+        return this.userRepository.findById(id).orElse(null);
+    }
+
+    public List<User> getAll() {
+        return this.userRepository.findAll();
     }
 }
