@@ -2,7 +2,9 @@ package com.todo.web.controllers;
 
 import com.todo.common.exceptions.BadRequestException;
 import com.todo.domain.entities.Todo;
+import com.todo.domain.entities.TodoStatus;
 import com.todo.domain.entities.User;
+import com.todo.domain.models.binding.StatusBindingModel;
 import com.todo.domain.models.binding.TodoBindingModel;
 import com.todo.domain.models.view.ResponseViewModel;
 import com.todo.domain.models.view.TodoViewModel;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/todos")
@@ -85,5 +88,14 @@ public class TodoController {
         List<TodoViewModel> todoViewModels = this.todoService.transformToViewModels(todos);
 
         return todoViewModels;
+    }
+
+    @PostMapping("/{id}/status")
+    public ResponseEntity changeStatus(@PathVariable Integer id, @RequestBody StatusBindingModel bindingModel) {
+        TodoStatus todoStatus = this.todoService.getStatus(bindingModel.getStatusId());
+
+        todoService.changeStatus(bindingModel.getTodoId(), todoStatus);
+
+        return ResponseEntity.ok().body(Map.of("message", "Status was successfully changed"));
     }
 }

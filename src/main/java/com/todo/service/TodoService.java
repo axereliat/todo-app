@@ -103,4 +103,21 @@ public class TodoService {
 
         return viewModels;
     }
+
+    public boolean changeStatus(Integer todoId, TodoStatus status) {
+        Todo todo = this.todoRepository.findById(todoId).orElse(null);
+
+        if (todo == null) {
+            return false;
+        }
+
+        todo.setStatus(status);
+        this.todoRepository.save(todo);
+
+        return true;
+    }
+
+    public TodoStatus getStatus(Integer statusId) {
+        return this.todoStatusRepository.findById(statusId).orElse(null);
+    }
 }
