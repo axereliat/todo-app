@@ -23,10 +23,12 @@ public class InitialData {
             return;
         }
 
-        TodoStatus todoStatusOne = new TodoStatus();
-        todoStatusOne.setName(TODO_STATUS);
-        TodoStatus todoStatusTwo = new TodoStatus();
-        todoStatusTwo.setName(DONE_STATUS);
+        TodoStatus todoStatusOne = TodoStatus.builder()
+                .name(TODO_STATUS)
+                .build();
+        TodoStatus todoStatusTwo = TodoStatus.builder()
+                .name(DONE_STATUS)
+                .build();
 
         this.todoStatusRepository.save(todoStatusOne);
         this.todoStatusRepository.save(todoStatusTwo);
