@@ -21,7 +21,6 @@ import java.util.Map;
 
 import static com.todo.utils.Constants.crossOriginUrl;
 
-@CrossOrigin(origins = crossOriginUrl)
 @RestController
 @RequestMapping("/todos")
 public class TodoController {
@@ -74,7 +73,7 @@ public class TodoController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}/delete")
     public ResponseEntity<ResponseViewModel> destroy(@PathVariable Integer id) {
         try {
             this.todoService.deleteTodo(id);

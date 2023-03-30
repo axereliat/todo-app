@@ -8,7 +8,11 @@ import javax.validation.constraints.Positive;
 @Data
 public class TodoViewModel {
 
+    private Integer id;
+
     private String content;
+
+    private Integer statusId;
 
     private String statusName;
 

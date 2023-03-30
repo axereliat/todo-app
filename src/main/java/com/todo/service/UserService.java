@@ -34,6 +34,15 @@ public class UserService {
         return new UserViewModel(newUser.getId(), newUser.getUsername());
     }
 
+    public UserViewModel login(UserBindingModel bindingModel) {
+        User user = this.userRepository.findByUsername(bindingModel.getUsername());
+
+        if (user != null) {
+            return new UserViewModel(user.getId(), user.getUsername());
+        }
+        throw new BadRequestException("User could not be found");
+    }
+
     public User findByUsername(String username) {
         return this.userRepository.findByUsername(username);
     }

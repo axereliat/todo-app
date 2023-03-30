@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TodoService {
@@ -93,10 +94,12 @@ public class TodoService {
         List<TodoViewModel> viewModels = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
 
-        for (Todo todo : todos) {
+        for (Todo todo : todos.stream().sorted((a, b) -> a.getStatus().getId()
+                .compareTo(b.getStatus().getId())).toList()) {
             TodoViewModel viewModel = modelMapper.map(todo, TodoViewModel.class);
             viewModel.setUsername(todo.getUser().getUsername());
             viewModel.setStatusName(todo.getStatus().getName());
+            viewModel.setStatusId(todo.getStatus().getId());
 
             viewModels.add(viewModel);
         }

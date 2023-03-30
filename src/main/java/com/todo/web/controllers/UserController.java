@@ -14,7 +14,6 @@ import java.util.Map;
 
 import static com.todo.utils.Constants.crossOriginUrl;
 
-@CrossOrigin(origins = crossOriginUrl)
 @RestController
 public class UserController {
 
@@ -36,6 +35,25 @@ public class UserController {
 
         try {
             UserViewModel viewModel = this.userService.register(bindingModel);
+
+            return ResponseEntity.ok().body(viewModel);
+        } catch (BadRequestException exception) {
+            return ResponseEntity.badRequest().body(new ResponseViewModel(exception.getMessage()));
+        }
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity login(@RequestBody @Valid UserBindingModel bindingModel,
+                                                      BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            ResponseViewModel viewModel =
+                    new ResponseViewModel(bindingResult.getAllErrors().get(0).getDefaultMessage());
+
+            return ResponseEntity.badRequest().body(viewModel);
+        }
+
+        try {
+            UserViewModel viewModel = this.userService.login(bindingModel);
 
             return ResponseEntity.ok().body(viewModel);
         } catch (BadRequestException exception) {
