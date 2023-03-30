@@ -3,6 +3,7 @@ package com.todo.service;
 import com.todo.common.exceptions.BadRequestException;
 import com.todo.domain.entities.User;
 import com.todo.domain.models.binding.UserBindingModel;
+import com.todo.domain.models.view.UserViewModel;
 import com.todo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +18,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void register(UserBindingModel bindingModel) {
-        if (this.userRepository.existsByUsername(bindingModel.getUsername())) {
-            throw new BadRequestException("Username already exists");
+    public UserViewModel register(UserBindingModel bindingModel) {
+        User user = this.userRepository.findByUsername(bindingModel.getUsername());
+
+        if (user != null) {
+            return new UserViewModel(user.getId(), user.getUsername());
         }
 
-        User user = User.builder()
+        User newUser = User.builder()
                 .username(bindingModel.getUsername())
                 .build();
 
-        this.userRepository.save(user);
+        this.userRepository.save(newUser);
+
+        return new UserViewModel(newUser.getId(), newUser.getUsername());
     }
 
     public User findByUsername(String username) {

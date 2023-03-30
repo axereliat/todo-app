@@ -3,6 +3,7 @@ package com.todo.web.controllers;
 import com.todo.common.exceptions.BadRequestException;
 import com.todo.domain.models.binding.UserBindingModel;
 import com.todo.domain.models.view.ResponseViewModel;
+import com.todo.domain.models.view.UserViewModel;
 import com.todo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Map;
 
+import static com.todo.utils.Constants.crossOriginUrl;
+
+@CrossOrigin(origins = crossOriginUrl)
 @RestController
 public class UserController {
 
@@ -21,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<ResponseViewModel> register(@RequestBody @Valid UserBindingModel bindingModel,
+    public ResponseEntity register(@RequestBody @Valid UserBindingModel bindingModel,
                                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             ResponseViewModel viewModel =
@@ -31,9 +35,9 @@ public class UserController {
         }
 
         try {
-            this.userService.register(bindingModel);
+            UserViewModel viewModel = this.userService.register(bindingModel);
 
-            return ResponseEntity.ok(new ResponseViewModel("User was successfully registered"));
+            return ResponseEntity.ok().body(viewModel);
         } catch (BadRequestException exception) {
             return ResponseEntity.badRequest().body(new ResponseViewModel(exception.getMessage()));
         }

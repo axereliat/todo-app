@@ -19,6 +19,9 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
+import static com.todo.utils.Constants.crossOriginUrl;
+
+@CrossOrigin(origins = crossOriginUrl)
 @RestController
 @RequestMapping("/todos")
 public class TodoController {
